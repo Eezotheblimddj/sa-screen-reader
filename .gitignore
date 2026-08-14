@@ -17,7 +17,7 @@ build/
 
 # Gradle files
 .gradle/
-gradle-wrapper.jar
+!gradle-wrapper.jar
 local.properties
 
 # Log files
