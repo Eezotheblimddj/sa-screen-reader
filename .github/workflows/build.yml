@@ -21,35 +21,40 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
 
-      # Build with explicit output directory listing
+      # Generate Gradle wrapper if it doesn't exist
+      - name: Prepare Gradle wrapper
+        run: |
+          if [ ! -f gradlew ]; then
+            echo "📦 Generating Gradle wrapper..."
+            sudo apt-get update
+            sudo apt-get install -y gradle
+            gradle wrapper
+          else
+            echo "✅ Gradle wrapper found"
+          fi
+
+      # Build using the wrapper
       - name: Build Debug APK
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --info
-        shell: bash
+          ./gradlew assembleDebug
 
-      # DEBUG: Search EVERYWHERE for the APK
-      - name: Find APK location (full system search)
+      # Find and show APK location
+      - name: Find APK location
         run: |
-          echo "=== Searching for APK files in entire project ==="
-          find . -name "*.apk" -type f 2>/dev/null || echo "No APK found in project root"
+          echo "🔍 Searching for APK files..."
+          find . -name "*.apk" -type f
           echo ""
-          echo "=== Checking build/outputs specifically ==="
-          ls -la app/build/outputs/apk/ 2>/dev/null || echo "apk folder doesn't exist"
-          echo ""
-          echo "=== Checking all subdirectories ==="
-          ls -la app/build/outputs/ 2>/dev/null || echo "outputs folder doesn't exist"
-          echo ""
-          echo "=== Listing entire build folder structure ==="
-          tree app/build/ 2>/dev/null || find app/build/ -type d 2>/dev/null | head -20
+          echo "📂 Checking build output folders..."
+          ls -la app/build/outputs/apk/debug/ 2>/dev/null || echo "Debug folder not found"
+          ls -la app/build/outputs/apk/ 2>/dev/null || echo "APK folder not found"
 
-      # UPLOAD: Only if we actually find something
+      # Upload any APK found
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
           path: |
-            app/build/outputs/apk/**/*.apk
-            app/build/outputs/**/*.apk
             **/*.apk
+            app/**/*.apk
           if-no-files-found: error
