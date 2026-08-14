@@ -21,21 +21,35 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
 
-      # This action will automatically install Gradle (no wrapper needed)
+      # Build with explicit output directory listing
       - name: Build Debug APK
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: assembleDebug
-          gradle-version: 8.4
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --info
+        shell: bash
 
-      # DEBUG: Find where the APK actually is
-      - name: Find APK location
-        run: find app -name "*.apk" 2>/dev/null || find . -name "*.apk"
+      # DEBUG: Search EVERYWHERE for the APK
+      - name: Find APK location (full system search)
+        run: |
+          echo "=== Searching for APK files in entire project ==="
+          find . -name "*.apk" -type f 2>/dev/null || echo "No APK found in project root"
+          echo ""
+          echo "=== Checking build/outputs specifically ==="
+          ls -la app/build/outputs/apk/ 2>/dev/null || echo "apk folder doesn't exist"
+          echo ""
+          echo "=== Checking all subdirectories ==="
+          ls -la app/build/outputs/ 2>/dev/null || echo "outputs folder doesn't exist"
+          echo ""
+          echo "=== Listing entire build folder structure ==="
+          tree app/build/ 2>/dev/null || find app/build/ -type d 2>/dev/null | head -20
 
-      # UPLOAD: Uses wildcard to catch any APK anywhere
+      # UPLOAD: Only if we actually find something
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
-          path: app/**/*.apk
+          path: |
+            app/build/outputs/apk/**/*.apk
+            app/build/outputs/**/*.apk
+            **/*.apk
           if-no-files-found: error
