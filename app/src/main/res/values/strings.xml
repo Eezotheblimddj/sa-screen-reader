@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SA Screen Reader</string>
+    <string name="accessibility_service_description">SA Screen Reader - Vuka Engine makes your phone speak to you in your language.</string>
+    
+    <!-- Button Texts -->
+    <string name="enable_service">🔊 Enable Screen Reader</string>
+    <string name="open_settings">⚙️ App Settings</string>
+    <string name="back_to_main">🔙 Back to Main</string>
+    
+    <!-- Settings Options -->
+    <string name="settings_language">🗣️ Language</string>
+    <string name="settings_gestures">👆 Gesture Profiles</string>
+    <string name="settings_speech_rate">🔊 Speech Rate</string>
+    <string name="settings_volume">📢 Volume</string>
+    <string name="settings_ocr">📷 OCR Settings</string>
+    <string name="settings_translation">🌍 Translation Settings</string>
+    <string name="settings_clipboard">📋 Clipboard History</string>
+    <string name="settings_reset">🔄 Reset to Defaults</string>
+    
+    <!-- Toast Messages -->
+    <string name="toast_enable_service">Enable SA Screen Reader from the list</string>
+    <string name="toast_service_active">SA Screen Reader is ACTIVE!</string>
+    <string name="toast_service_inactive">Please enable SA Screen Reader in Accessibility Settings</string>
+    <string name="toast_opening">Opening:</string>
+    
+    <!-- Language Names -->
+    <string name="lang_afrikaans">Afrikaans</string>
+    <string name="lang_english">English</string>
+    <string name="lang_isiXhosa">isiXhosa</string>
+    <string name="lang_isiZulu">isiZulu</string>
+    <string name="lang_Sepedi">Sepedi</string>
+    <string name="lang_Sesotho">Sesotho</string>
+    <string name="lang_Setswana">Setswana</string>
+    <string name="lang_SiSwati">SiSwati</string>
+    <string name="lang_Tshivenda">Tshivenda</string>
+    <string name="lang_Xitsonga">Xitsonga</string>
+    <string name="lang_isiNdebele">isiNdebele</string>
+</resources>
