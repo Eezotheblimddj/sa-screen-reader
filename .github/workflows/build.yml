@@ -33,21 +33,36 @@ jobs:
             echo "✅ Gradle wrapper found"
           fi
 
-      # Build using the wrapper
+      # DEBUG: Show project structure
+      - name: Show project structure
+        run: |
+          echo "📁 Current directory:"
+          pwd
+          echo ""
+          echo "📂 Files in root:"
+          ls -la
+          echo ""
+          echo "📂 Looking for build.gradle files:"
+          find . -name "build.gradle" -o -name "build.gradle.kts" -o -name "settings.gradle" -o -name "settings.gradle.kts"
+          echo ""
+          echo "📂 Checking for app folder:"
+          ls -la app/ 2>/dev/null || echo "No 'app' folder found"
+
+      # Build using the wrapper with more info
       - name: Build Debug APK
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug
+          echo "🔨 Running build..."
+          ./gradlew assembleDebug --stacktrace
 
       # Find and show APK location
       - name: Find APK location
         run: |
           echo "🔍 Searching for APK files..."
-          find . -name "*.apk" -type f
+          find . -name "*.apk" -type f || echo "No APK found"
           echo ""
           echo "📂 Checking build output folders..."
-          ls -la app/build/outputs/apk/debug/ 2>/dev/null || echo "Debug folder not found"
-          ls -la app/build/outputs/apk/ 2>/dev/null || echo "APK folder not found"
+          find . -type d -name "outputs" 2>/dev/null || echo "No outputs folder found"
 
       # Upload any APK found
       - name: Upload APK as Artifact
